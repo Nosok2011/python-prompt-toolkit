@@ -17,6 +17,7 @@ from prompt_toolkit.key_binding.key_bindings import KeyBindings, merge_key_bindi
 from prompt_toolkit.layout import Layout
 from prompt_toolkit.layout.containers import AnyContainer, HSplit
 from prompt_toolkit.layout.dimension import Dimension as D
+from prompt_toolkit.shortcuts.utils import get_width, len_text_plus_two
 from prompt_toolkit.styles import BaseStyle
 from prompt_toolkit.validation import Validator
 from prompt_toolkit.widgets import (
@@ -46,7 +47,9 @@ def yes_no_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
     yes_text: str = "Yes",
+    yes_width: int = 12,
     no_text: str = "No",
+    no_width: int = 12,
     style: BaseStyle | None = None,
 ) -> Application[bool]:
     """
@@ -64,8 +67,8 @@ def yes_no_dialog(
         title=title,
         body=Label(text=text, dont_extend_height=True),
         buttons=[
-            Button(text=yes_text, handler=yes_handler),
-            Button(text=no_text, handler=no_handler),
+            Button(text=yes_text, handler=yes_handler, width=get_width(yes_text) if yes_width < len_text_plus_two(yes_text) else yes_width),
+            Button(text=no_text, handler=no_handler, width=get_width(no_text) if no_width < len_text_plus_two(no_text) else no_width),
         ],
         with_background=True,
     )
@@ -79,7 +82,7 @@ _T = TypeVar("_T")
 def button_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
-    buttons: list[tuple[str, _T]] = [],
+    buttons: list[tuple[str, _T, int]] = [],
     style: BaseStyle | None = None,
 ) -> Application[_T]:
     """
@@ -94,8 +97,8 @@ def button_dialog(
         title=title,
         body=Label(text=text, dont_extend_height=True),
         buttons=[
-            Button(text=t, handler=functools.partial(button_handler, v))
-            for t, v in buttons
+            Button(text=t, handler=functools.partial(button_handler, v), width=get_width(t) if w < len_text_plus_two(t) else w)
+            for t, v, w in buttons
         ],
         with_background=True,
     )
@@ -107,7 +110,9 @@ def input_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
     ok_text: str = "OK",
+    ok_width: int = 12,
     cancel_text: str = "Cancel",
+    cancel_width: int = 12,
     completer: Completer | None = None,
     validator: Validator | None = None,
     password: FilterOrBool = False,
@@ -126,8 +131,8 @@ def input_dialog(
     def ok_handler() -> None:
         get_app().exit(result=textfield.text)
 
-    ok_button = Button(text=ok_text, handler=ok_handler)
-    cancel_button = Button(text=cancel_text, handler=_return_none)
+    ok_button = Button(text=ok_text, handler=ok_handler, width=get_width(ok_text) if ok_width < len_text_plus_two(ok_text) else ok_width)
+    cancel_button = Button(text=cancel_text, handler=_return_none, width=get_width(cancel_text) if cancel_width < len_text_plus_two(cancel_text) else cancel_width)
 
     textfield = TextArea(
         text=default,
@@ -159,6 +164,7 @@ def message_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
     ok_text: str = "Ok",
+    ok_width: int = 12,
     style: BaseStyle | None = None,
 ) -> Application[None]:
     """
@@ -167,7 +173,7 @@ def message_dialog(
     dialog = Dialog(
         title=title,
         body=Label(text=text, dont_extend_height=True),
-        buttons=[Button(text=ok_text, handler=_return_none)],
+        buttons=[Button(text=ok_text, handler=_return_none, width=get_width(ok_text) if ok_width < len_text_plus_two(ok_text) else ok_width)],
         with_background=True,
     )
 
@@ -178,7 +184,9 @@ def radiolist_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
     ok_text: str = "Ok",
+    ok_width: int = 12,
     cancel_text: str = "Cancel",
+    cancel_width: int = 12,
     values: Sequence[tuple[_T, AnyFormattedText]] | None = None,
     default: _T | None = None,
     style: BaseStyle | None = None,
@@ -204,8 +212,8 @@ def radiolist_dialog(
             padding=1,
         ),
         buttons=[
-            Button(text=ok_text, handler=ok_handler),
-            Button(text=cancel_text, handler=_return_none),
+            Button(text=ok_text, handler=ok_handler, width=get_width(ok_text) if ok_width < len_text_plus_two(ok_text) else ok_width),
+            Button(text=cancel_text, handler=_return_none, width=get_width(cancel_text) if cancel_width < len_text_plus_two(cancel_text) else cancel_width),
         ],
         with_background=True,
     )
@@ -217,7 +225,9 @@ def checkboxlist_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
     ok_text: str = "Ok",
+    ok_width: int = 12,
     cancel_text: str = "Cancel",
+    cancel_width: int = 12,
     values: Sequence[tuple[_T, AnyFormattedText]] | None = None,
     default_values: Sequence[_T] | None = None,
     style: BaseStyle | None = None,
@@ -243,8 +253,8 @@ def checkboxlist_dialog(
             padding=1,
         ),
         buttons=[
-            Button(text=ok_text, handler=ok_handler),
-            Button(text=cancel_text, handler=_return_none),
+            Button(text=ok_text, handler=ok_handler, width=get_width(ok_text) if ok_width < len_text_plus_two(ok_text) else ok_width),
+            Button(text=cancel_text, handler=_return_none, width=get_width(cancel_text) if cancel_width < len_text_plus_two(cancel_text) else cancel_width),
         ],
         with_background=True,
     )
