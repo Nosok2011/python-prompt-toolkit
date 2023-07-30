@@ -30,12 +30,42 @@ if TYPE_CHECKING:
     from prompt_toolkit.layout.containers import AnyContainer
 
 __all__ = [
+    "get_width",
     "print_formatted_text",
     "print_container",
     "clear",
     "set_title",
     "clear_title",
 ]
+
+
+def get_width(
+    text: str,
+    plus: int = 0,
+) -> int:
+    """
+    Получить ширину для кнопки из текста.
+    :param str text: Текст, из которого будет получаться ширина для кнопки.
+    :param int plus: Прибавить к ширине для кнопки указанное значение.
+    :return: Ширина для кнопки.
+    :rtype: int
+    """
+    width = len_text_plus_two(text)
+    if plus:
+        width += plus
+    return width
+
+    
+def len_text_plus_two(
+    text: str
+) -> int:
+    """
+    Прибавляет к длине текста 2 (полезно при изменении длины кнопки, можно использовать для учёта угловых скобок по краям текста на кнопке).
+    :param str text: Текст.
+    :return: Длина текста + 2.
+    :rtype: int
+    """
+    return len(text) + 2
 
 
 def print_formatted_text(
