@@ -82,7 +82,7 @@ _T = TypeVar("_T")
 def button_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
-    buttons: list[tuple[str, _T, int]] = [],
+    buttons: list[tuple[str, _T, str, str, int]] = [],
     style: BaseStyle | None = None,
 ) -> Application[_T]:
     """
@@ -97,8 +97,8 @@ def button_dialog(
         title=title,
         body=Label(text=text, dont_extend_height=True),
         buttons=[
-            Button(text=t, handler=functools.partial(button_handler, v), width=get_width(t) if w < len_text_plus_two(t) else w)
-            for t, v, w in buttons
+            Button(text=t, handler=functools.partial(button_handler, v), width=get_width(t) if w < len_text_plus_two(t) else w, left_symbol=l, right_symbol=r)
+            for t, v, l, r, w in buttons
         ],
         with_background=True,
     )
