@@ -50,7 +50,7 @@ in order to make displaying the progress possible:
         yield ...
 
     with ProgressBar() as pb:
-        for i in pb(some_iterable, total=1000):
+        for i in pb(some_iterable(), total=1000):
             time.sleep(.01)
 
 
@@ -127,7 +127,7 @@ Both the title and the labels can be :ref:`formatted text <formatted_text>`.
 Formatting the progress bar
 ---------------------------
 
-The visualisation of a :class:`~prompt_toolkit.shortcuts.ProgressBar` can be
+The visualization of a :class:`~prompt_toolkit.shortcuts.ProgressBar` can be
 customized by using a different sequence of formatters. The default formatting
 looks something like this:
 
