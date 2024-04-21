@@ -163,7 +163,7 @@ def input_dialog(
 def message_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
-    ok_text: str = "Ok",
+    ok_text: str = "Ок",
     ok_width: int = 0,
     style: BaseStyle | None = None,
 ) -> Application[None]:
