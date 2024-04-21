@@ -50,6 +50,8 @@ def yes_no_dialog(
     yes_width: int = 0,
     no_text: str = "Нет",
     no_width: int = 0,
+    dont_extend_width: bool = True,
+    dont_extend_height: bool = True,
     style: BaseStyle | None = None,
 ) -> Application[bool]:
     """
@@ -65,7 +67,7 @@ def yes_no_dialog(
 
     dialog = Dialog(
         title=title,
-        body=Label(text=text, dont_extend_height=True),
+        body=Label(text=text, dont_extend_height=dont_extend_height, dont_extend_width=dont_extend_width),
         buttons=[
             Button(text=yes_text, handler=yes_handler, width=get_width(yes_text) if yes_width < len_text_plus_two(yes_text) else yes_width),
             Button(text=no_text, handler=no_handler, width=get_width(no_text) if no_width < len_text_plus_two(no_text) else no_width),
@@ -82,6 +84,8 @@ _T = TypeVar("_T")
 def button_dialog(
     title: AnyFormattedText = "",
     text: AnyFormattedText = "",
+    dont_extend_width: bool = True,
+    dont_extend_height: bool = True,
     buttons: list[tuple[str, _T, str, str, int]] = [],
     style: BaseStyle | None = None,
 ) -> Application[_T]:
@@ -95,7 +99,7 @@ def button_dialog(
 
     dialog = Dialog(
         title=title,
-        body=Label(text=text, dont_extend_height=True),
+        body=Label(text=text, dont_extend_height=dont_extend_height, dont_extend_width=dont_extend_width),
         buttons=[
             Button(text=t, handler=functools.partial(button_handler, v), width=get_width(t) if w < len_text_plus_two(t) else w, left_symbol=l, right_symbol=r)
             for t, v, l, r, w in buttons
@@ -113,6 +117,8 @@ def input_dialog(
     ok_width: int = 0,
     cancel_text: str = "Отмена",
     cancel_width: int = 0,
+    dont_extend_width: bool = True,
+    dont_extend_height: bool = True,
     completer: Completer | None = None,
     validator: Validator | None = None,
     password: FilterOrBool = False,
@@ -147,7 +153,7 @@ def input_dialog(
         title=title,
         body=HSplit(
             [
-                Label(text=text, dont_extend_height=True),
+                Label(text=text, dont_extend_height=dont_extend_height, dont_extend_width=dont_extend_width),
                 textfield,
                 ValidationToolbar(),
             ],
@@ -165,6 +171,8 @@ def message_dialog(
     text: AnyFormattedText = "",
     ok_text: str = "Ок",
     ok_width: int = 0,
+    dont_extend_width: bool = True,
+    dont_extend_height: bool = True,
     style: BaseStyle | None = None,
 ) -> Application[None]:
     """
@@ -172,7 +180,7 @@ def message_dialog(
     """
     dialog = Dialog(
         title=title,
-        body=Label(text=text, dont_extend_height=True),
+        body=Label(text=text, dont_extend_height=dont_extend_height, dont_extend_width=dont_extend_width),
         buttons=[Button(text=ok_text, handler=_return_none, width=get_width(ok_text) if ok_width < len_text_plus_two(ok_text) else ok_width)],
         with_background=True,
     )
@@ -187,6 +195,8 @@ def radiolist_dialog(
     ok_width: int = 0,
     cancel_text: str = "Отмена",
     cancel_width: int = 0,
+    dont_extend_width: bool = True,
+    dont_extend_height: bool = True,
     values: Sequence[tuple[_T, AnyFormattedText]] | None = None,
     default: _T | None = None,
     style: BaseStyle | None = None,
@@ -228,6 +238,8 @@ def checkboxlist_dialog(
     ok_width: int = 0,
     cancel_text: str = "Отмена",
     cancel_width: int = 0,
+    dont_extend_width: bool = True,
+    dont_extend_height: bool = True,
     values: Sequence[tuple[_T, AnyFormattedText]] | None = None,
     default_values: Sequence[_T] | None = None,
     style: BaseStyle | None = None,
@@ -249,7 +261,7 @@ def checkboxlist_dialog(
     dialog = Dialog(
         title=title,
         body=HSplit(
-            [Label(text=text, dont_extend_height=True), cb_list],
+            [Label(text=text, dont_extend_height=dont_extend_height, dont_extend_width=dont_extend_width), cb_list],
             padding=1,
         ),
         buttons=[
