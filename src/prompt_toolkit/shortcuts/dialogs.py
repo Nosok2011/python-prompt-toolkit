@@ -218,7 +218,7 @@ def radiolist_dialog(
     dialog = Dialog(
         title=title,
         body=HSplit(
-            [Label(text=text, dont_extend_height=True), radio_list],
+            [Label(text=text, dont_extend_height=dont_extend_height, dont_extend_width=dont_extend_width), radio_list],
             padding=1,
         ),
         buttons=[
